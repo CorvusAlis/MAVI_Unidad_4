@@ -1,40 +1,48 @@
 #ifndef NDEBUG
-#include <vld.h> // Visual Leak Detector, útil en modo Debug para detectar fugas de memoria
+#include <vld.h>
 #endif
 
 #include "raylib.h"
+#include "fantasma.h"
 
 int main(void)
 {
-    // Inicializamos una ventana de 800x450 píxeles con un título personalizado
-    InitWindow(800, 450, "Proyecto MAVI");
 
-    // Configuramos el framerate deseado (opcional, pero recomendado)
+    InitWindow(1024, 768, "Fantasmas!");
     SetTargetFPS(60);
 
-    Color fondo = { 110, 100, 215, 255 };//color violeta personalizado
-    Color texto = DARKPURPLE;
+    //para instrucciones
+    int screenWidth = GetScreenWidth();
+    int screenHeight = GetScreenHeight();
+    const char* instrucciones = "Usa las flechas para mover al fantasma activo - Usa la barra espaciadora para cambiar el fantasma activo";
+    int fontSize = 19;
+    int anchoTexto = MeasureText(instrucciones, fontSize);
 
-    // Bucle principal del juego (se repite hasta que se cierre la ventana)
+    //Fantasma::Fantasma(const string rutaTextura, Vector2 pos, float escala, float rotacion, float vel, Color color, bool activo)
+    //crear objeto fantasma purpura en la esquina superior izquierda
+    Fantasma fanti1("assets/fantasma.png", { 150, 200 }, 3.0f, 0.0f, 3.0f, DARKPURPLE, true);
+    Fantasma fanti2("assets/fantasma.png", { 800, 600 }, 3.0f, 0.0f, 3.0f, GRAY, false);
+
     while (!WindowShouldClose())
     {
-        // Iniciamos la etapa de dibujo
+        fanti1.ActualizarPos(); //controla movimiento por teclado con flechas
+        fanti2.ActualizarPos();
+
         BeginDrawing();
+            
+            fanti1.MostrarInfo({ 20,20 });
+            fanti2.MostrarInfo({ (float)GetScreenWidth() - 250, 20 });
 
-        // Limpiamos la pantalla 
-        ClearBackground(fondo);
+            ClearBackground(RAYWHITE);
+            fanti1.Dibujar();
+            fanti2.Dibujar();
 
-		// Dibujamos un texto centrado, aca damos la posicion, el tamaño y el color
-        DrawText("Felicitaciones, ejecutaste tu primer proyecto con Raylib!!!", 90, 200, 20, texto);
+            //instrucciones
+            DrawText(instrucciones, (screenWidth - anchoTexto) / 2, screenHeight - 40, fontSize, DARKGRAY);
 
-        // Dibujamos un rectángulo a modo decorativo
-        DrawRectangle(80, 190, 650, 40, Fade(DARKGREEN, 0.5f)); // Fondo semitransparente para resaltar el texto
-
-        // Finalizamos el dibujo
         EndDrawing();
     }
 
-    // Cerramos la ventana y liberamos recursos
     CloseWindow();
 
     return 0;

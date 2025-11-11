@@ -24,6 +24,7 @@ Grim::Grim(const string rutaTextura, Vector2 pos, float escala, float rotacion, 
 
     //carga de sonidos
     salto = LoadSound("assets/sound/salto.wav");
+    SetSoundVolume(salto, 0.5f);    //por las dudas
 
 }
 
@@ -133,7 +134,7 @@ void Grim::MostrarInfo(Vector2 posicionInfo) {
     if (IsKeyPressed(KEY_M)) mostrando = !mostrando;
 
     if (mostrando) {
-        DrawText(TextFormat("Posicion: (%.0f, %.0f)", posicion.x, posicion.y), posicionInfo.x, posicionInfo.y, 20, DARKGRAY);
+        DrawText(TextFormat("Posicion: (%.0f, %.0f)", posicion.x, posicion.y), posicionInfo.x, posicionInfo.y, 20, BLACK);
     }
 
 }
